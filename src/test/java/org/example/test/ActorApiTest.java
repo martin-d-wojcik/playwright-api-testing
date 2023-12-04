@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
-public class PlaywrightApiTests {
+public class ActorApiTest {
     static Playwright playwright;
     static Browser browser;
     BrowserContext context;
