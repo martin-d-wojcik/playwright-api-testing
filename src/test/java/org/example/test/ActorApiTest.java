@@ -49,5 +49,20 @@ public class ActorApiTest {
         assertTrue(ResponseHandler.arrayInResponseHasValues(response));
     }
 
-    
+    @Test
+    public void testGetActorByIdShouldPass() {
+        // Prepare
+        APIRequestContext request = context.request();
+        long actorId = 7L;
+
+        // Perform
+        APIResponse response = request.get(baseUrl + "/actor/id/" + actorId);
+
+        // Assert
+        assertEquals(response.status(), 200);
+        String firstNameFromResponse = ResponseHandler.getValueFromResponse(response, "firstName");
+        String lastNameFromResponse = ResponseHandler.getValueFromResponse(response, "lastName");
+        assertEquals( "Jason", firstNameFromResponse);
+        assertEquals("Flemyng", lastNameFromResponse);
+    }
 }

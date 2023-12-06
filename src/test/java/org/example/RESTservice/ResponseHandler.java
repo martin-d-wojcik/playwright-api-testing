@@ -2,9 +2,12 @@ package org.example.RESTservice;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.microsoft.playwright.APIResponse;
+
+import java.io.IOException;
 
 public class ResponseHandler {
 
@@ -19,6 +22,20 @@ public class ResponseHandler {
                 return true;
             }
         } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
+
+        return returnValue;
+    }
+
+    public static String getValueFromResponse(APIResponse apiResponse, String key) {
+        String returnValue = null;
+
+        try {
+            ObjectMapper objectMapper = new ObjectMapper();
+            JsonNode jsonResponse = objectMapper.readTree(apiResponse.body());
+            returnValue = jsonResponse.get(key).asText();
+        } catch (IOException e) {
             throw new RuntimeException(e);
         }
 

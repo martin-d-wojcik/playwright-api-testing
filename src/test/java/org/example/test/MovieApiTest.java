@@ -33,9 +33,8 @@ public class MovieApiTest {
 
     @Test
     public void testAddNewMovieShouldPass() {
+        // prepare
         APIRequestContext request = context.request();
-
-        // Create payload
         Movie movie = new Movie(1L,
                 "Lock, Stock and Two Smoking Barells",
                 "Guy Rithcie",
@@ -44,12 +43,12 @@ public class MovieApiTest {
                 "Funny films awards",
                 1998);
 
-        // Send request
+        // Perform
         APIResponse apiResponse = request.post("http://localhost:8081/api/v1/movie/add",
                 RequestOptions.create()
                         .setData(movie));
 
-        // Assertions
+        // Assert
         assertEquals(apiResponse.status(), 201);
     }
 }
