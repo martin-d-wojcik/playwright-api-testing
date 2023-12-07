@@ -9,6 +9,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class MovieApiTest {
 
@@ -56,6 +57,19 @@ public class MovieApiTest {
 
         // Assert
         assertEquals(response.status(), 201);
+    }
+
+    @Test
+    public void testGetAllMoviesShouldReturnArray() {
+        // Prepare
+        apiRequestContext = browserContext.request();
+
+        // Perform
+        response = apiRequestContext.get(baseUrl + "/movies");
+
+        // Assert
+        assertEquals(response.status(), 200);
+        assertTrue(ResponseHandler.arrayInResponseHasValues(response));
     }
 
     @Test
