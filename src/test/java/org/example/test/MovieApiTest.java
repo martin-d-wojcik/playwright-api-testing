@@ -39,6 +39,28 @@ public class MovieApiTest {
     }
 
     @Test
+    public void testGetMoviebByIdShouldPass() {
+        // Prepare
+        apiRequestContext = browserContext.request();
+        long movieId = 6L;
+
+        // Perform
+        response = apiRequestContext.get(baseUrl + "/movie/id/" + movieId);
+
+        // Assert
+        assertEquals(200, response.status());
+
+        // Deserialise response to actor object
+        movieModel = ResponseHandler.deserialiseResponseToMovieModelObject(response);
+        assertEquals("The man from U.N.C.L.E", movieModel.getTitle());
+        assertEquals("Guy Ritchie", movieModel.getWriter());
+        assertEquals("Guy Ritchie", movieModel.getDirector());
+        assertEquals("Action, Adventure, Comedy", movieModel.getGenre());
+        assertEquals("SDFCS", movieModel.getAwards());
+        assertEquals(2015, movieModel.getReleaseYear());
+    }
+
+    @Test
     public void testAddNewMovieShouldPass() {
         // prepare
         apiRequestContext = browserContext.request();
@@ -56,7 +78,7 @@ public class MovieApiTest {
                         .setData(movieModel));
 
         // Assert
-        assertEquals(response.status(), 201);
+        assertEquals(201, response.status());
     }
 
     @Test
@@ -68,29 +90,7 @@ public class MovieApiTest {
         response = apiRequestContext.get(baseUrl + "/movies");
 
         // Assert
-        assertEquals(response.status(), 200);
+        assertEquals(200, response.status());
         assertTrue(ResponseHandler.arrayInResponseHasValues(response));
-    }
-
-    @Test
-    public void testGetMoviebByIdShouldPass() {
-        // Prepare
-        apiRequestContext = browserContext.request();
-        long movieId = 6L;
-
-        // Perform
-        response = apiRequestContext.get(baseUrl + "/movie/id/" + movieId);
-
-        // Assert
-        assertEquals(response.status(), 200);
-
-        // Deserialise response to actor object
-        movieModel = ResponseHandler.deserialiseResponseToMovieModelObject(response);
-        assertEquals("The man from U.N.C.L.E", movieModel.getTitle());
-        assertEquals("Guy Ritchie", movieModel.getWriter());
-        assertEquals("Guy Ritchie", movieModel.getDirector());
-        assertEquals("Action, Adventure, Comedy", movieModel.getGenre());
-        assertEquals("SDFCS", movieModel.getAwards());
-        assertEquals(2015, movieModel.getReleaseYear());
     }
 }

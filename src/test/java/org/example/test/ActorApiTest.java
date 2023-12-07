@@ -38,19 +38,6 @@ public class ActorApiTest {
     }
 
     @Test
-    public void testGetAllActorsShouldReturnArray() {
-        // Prepare
-        apiRequestContext = browserContext.request();
-
-        // Perform
-        response = apiRequestContext.get(baseUrl + "/actors");
-
-        // Assert
-        assertEquals(response.status(), 200);
-        assertTrue(ResponseHandler.arrayInResponseHasValues(response));
-    }
-
-    @Test
     public void testGetActorByIdShouldPass() {
         // Prepare
         apiRequestContext = browserContext.request();
@@ -60,13 +47,26 @@ public class ActorApiTest {
         response = apiRequestContext.get(baseUrl + "/actor/id/" + actorId);
 
         // Assert
-        assertEquals(response.status(), 200);
+        assertEquals(200, response.status());
 
         // Deserialise response to actor object
         actorModel = ResponseHandler.deserialiseResponseToActorModelObject(response);
         assertEquals("Jason", actorModel.getFirstName());
         assertEquals("Statham", actorModel.getLastName());
         assertEquals("UK", actorModel.getBirthCountry());
+    }
+
+    @Test
+    public void testGetAllActorsShouldReturnArray() {
+        // Prepare
+        apiRequestContext = browserContext.request();
+
+        // Perform
+        response = apiRequestContext.get(baseUrl + "/actors");
+
+        // Assert
+        assertEquals(200, response.status());
+        assertTrue(ResponseHandler.arrayInResponseHasValues(response));
     }
 
     @Test
@@ -79,7 +79,7 @@ public class ActorApiTest {
         response = apiRequestContext.get(baseUrl + "/actor/" + actorFirstName);
 
         // Assert
-        assertEquals(response.status(), 200);
+        assertEquals(200, response.status());
         assertTrue(ResponseHandler.arrayHasActors(response, actorFirstName));
     }
 
@@ -99,7 +99,7 @@ public class ActorApiTest {
                         .setData(actorModel));
 
         // Assert
-        assertEquals(response.status(), 201);
+        assertEquals(201, response.status());
     }
 
     @Test
@@ -118,7 +118,7 @@ public class ActorApiTest {
                         .setData(updateActor));
 
         // Assert
-        assertEquals(responseUpdated.status(), 200);
+        assertEquals(200, response.status());
     }
 
     @Test
@@ -131,6 +131,6 @@ public class ActorApiTest {
         response = apiRequestContext.delete(baseUrl + "/actor/" + actorId);
 
         // Assert
-        assertEquals(response.status(), 200);
+        assertEquals(200, response.status());
     }
 }
