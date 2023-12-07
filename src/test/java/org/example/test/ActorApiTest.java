@@ -120,4 +120,17 @@ public class ActorApiTest {
         // Assert
         assertEquals(responseUpdated.status(), 200);
     }
+
+    @Test
+    public void testDeleteActorByIdShouldPass() {
+        // Prepare
+        long actorId = 100L;
+        apiRequestContext = browserContext.request();
+
+        // Perform
+        response = apiRequestContext.delete(baseUrl + "/actor/" + actorId);
+
+        // Assert
+        assertEquals(response.status(), 200);
+    }
 }
