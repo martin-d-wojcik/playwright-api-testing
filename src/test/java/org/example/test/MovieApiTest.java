@@ -64,21 +64,22 @@ public class MovieApiTest {
     public void testAddNewMovieShouldPass() {
         // prepare
         apiRequestContext = browserContext.request();
-        movieModel = new MovieModel(1L,
-                "Lock, Stock and Two Smoking Barells",
+        movieModel = new MovieModel(100L,
+                "The Tale of The Most Quintessential Tales",
                 "Guy Rithcie",
                 "Guy Rithcie",
                 "Action/Comedy",
-                "Funny films awards",
-                1998);
+                "Very good awards",
+                2023);
 
         // Perform
-        response = apiRequestContext.post("http://localhost:8081/api/v1/movie/add",
+        response = apiRequestContext.post(baseUrl + "/movie/add",
                 RequestOptions.create()
                         .setData(movieModel));
 
         // Assert
         assertEquals(201, response.status());
+        assertTrue(response.text().contains("Created"));
     }
 
     @Test
