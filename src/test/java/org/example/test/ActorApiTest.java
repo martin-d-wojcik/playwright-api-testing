@@ -1,6 +1,7 @@
 package org.example.test;
 
 import com.microsoft.playwright.*;
+import com.microsoft.playwright.options.RequestOptions;
 import org.example.RESTservice.ResponseHandler;
 import org.example.model.ActorModel;
 import org.junit.jupiter.api.BeforeAll;
@@ -17,6 +18,7 @@ public class ActorApiTest {
     private static String baseUrl;
     private static APIRequestContext apiRequestContext;
     private static APIResponse response;
+    private static ActorModel actorModel;
 
     @BeforeAll
     static void setup() {
@@ -61,7 +63,7 @@ public class ActorApiTest {
         assertEquals(response.status(), 200);
 
         // Deserialise response to actor object
-        ActorModel actorModel = ResponseHandler.deserialiseResponseToActorModelObject(response);
+        actorModel = ResponseHandler.deserialiseResponseToActorModelObject(response);
         assertEquals("Jason", actorModel.getFirstName());
         assertEquals("Statham", actorModel.getLastName());
         assertEquals("UK", actorModel.getBirthCountry());
@@ -79,5 +81,24 @@ public class ActorApiTest {
         // Assert
         assertEquals(response.status(), 200);
         assertTrue(ResponseHandler.arrayHasActors(response, actorFirstName));
+    }
+
+    @Test
+    public void testAddNewActorShouldPass() {
+        // Prepare
+        apiRequestContext = browserContext.request();
+        actorModel = new ActorModel(100L,
+                "Sylvester",
+                "Stallone",
+                "USA",
+                1L);
+
+        // Perform
+        response = apiRequestContext.post(baseUrl + "/actor",
+                RequestOptions.create()
+                        .setData(actorModel));
+
+        // Assert
+        assertEquals(response.status(), 201);
     }
 }
