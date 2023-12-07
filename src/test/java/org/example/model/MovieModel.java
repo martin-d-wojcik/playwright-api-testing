@@ -1,6 +1,6 @@
-package org.example.pojo;
+package org.example.model;
 
-public class Movie {
+public class MovieModel {
     private Long id;
     private String title;
     private String writer;
@@ -9,7 +9,7 @@ public class Movie {
     private String awards;
     private int releaseYear;
 
-    public Movie(Long id, String title, String writer, String director, String genre, String awards, int releaseYear) {
+    public MovieModel(Long id, String title, String writer, String director, String genre, String awards, int releaseYear) {
         this.id = id;
         this.title = title;
         this.writer = writer;

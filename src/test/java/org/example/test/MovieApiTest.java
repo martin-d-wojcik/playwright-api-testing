@@ -2,7 +2,7 @@ package org.example.test;
 
 import com.microsoft.playwright.*;
 import com.microsoft.playwright.options.RequestOptions;
-import org.example.pojo.Movie;
+import org.example.model.MovieModel;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -35,7 +35,7 @@ public class MovieApiTest {
     public void testAddNewMovieShouldPass() {
         // prepare
         APIRequestContext request = context.request();
-        Movie movie = new Movie(1L,
+        MovieModel movie = new MovieModel(1L,
                 "Lock, Stock and Two Smoking Barells",
                 "Guy Rithcie",
                 "Guy Rithcie",

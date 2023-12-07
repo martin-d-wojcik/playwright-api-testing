@@ -1,11 +1,8 @@
 package org.example.test;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.microsoft.playwright.*;
 import org.example.RESTservice.ResponseHandler;
+import org.example.model.ActorModel;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -16,8 +13,10 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class ActorApiTest {
     static Playwright playwright;
     static Browser browser;
-    BrowserContext context;
+    static BrowserContext browserContext;
     private static String baseUrl;
+    private static APIRequestContext apiRequestContext;
+    private static APIResponse response;
 
     @BeforeAll
     static void setup() {
@@ -29,8 +28,8 @@ public class ActorApiTest {
     @BeforeEach
     public void initialiseContext() {
         //Below lines of code will enable tracing
-        context = browser.newContext();
-        context.tracing().start(new Tracing.StartOptions()
+        browserContext = browser.newContext();
+        browserContext.tracing().start(new Tracing.StartOptions()
                 .setScreenshots(true)
                 .setSnapshots(true)
                 .setSources(true));
@@ -39,10 +38,10 @@ public class ActorApiTest {
     @Test
     public void testGetAllActorsShouldReturnArray() {
         // Prepare
-        APIRequestContext request = context.request();
+        apiRequestContext = browserContext.request();
 
         // Perform
-        APIResponse response = request.get(baseUrl + "/actors");
+        response = apiRequestContext.get(baseUrl + "/actors");
 
         // Assert
         assertEquals(response.status(), 200);
@@ -52,17 +51,19 @@ public class ActorApiTest {
     @Test
     public void testGetActorByIdShouldPass() {
         // Prepare
-        APIRequestContext request = context.request();
-        long actorId = 7L;
+        apiRequestContext = browserContext.request();
+        long actorId = 2L;
 
         // Perform
-        APIResponse response = request.get(baseUrl + "/actor/id/" + actorId);
+        response = apiRequestContext.get(baseUrl + "/actor/id/" + actorId);
 
         // Assert
         assertEquals(response.status(), 200);
-        String firstNameFromResponse = ResponseHandler.getValueFromResponse(response, "firstName");
-        String lastNameFromResponse = ResponseHandler.getValueFromResponse(response, "lastName");
-        assertEquals( "Jason", firstNameFromResponse);
-        assertEquals("Flemyng", lastNameFromResponse);
+
+        // Deserialise response to actor object
+        ActorModel actorModel = ResponseHandler.deserialiseResponseToActorModelObject(response);
+        assertEquals("Jason", actorModel.getFirstName());
+        assertEquals("Statham", actorModel.getLastName());
+        assertEquals("UK", actorModel.getBirthCountry());
     }
 }

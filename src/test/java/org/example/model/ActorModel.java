@@ -1,6 +1,6 @@
-package org.example.pojo;
+package org.example.model;
 
-public class Actor {
+public class ActorModel {
 
     private long id;
     private String firstName;
@@ -8,7 +8,9 @@ public class Actor {
     private String birthCountry;
     private long movieId;
 
-    public Actor(long id, String firstName, String lastName, String birthCountry, long movieId) {
+    public ActorModel() {}
+
+    public ActorModel(long id, String firstName, String lastName, String birthCountry, long movieId) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;

@@ -1,11 +1,11 @@
 package org.example.RESTservice;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.microsoft.playwright.APIResponse;
+import org.example.model.ActorModel;
 
 import java.io.IOException;
 
@@ -40,5 +40,19 @@ public class ResponseHandler {
         }
 
         return returnValue;
+    }
+
+    public static ActorModel deserialiseResponseToActorModelObject(APIResponse apiResponse) {
+        ObjectMapper objectMapper = new ObjectMapper();
+        ActorModel actorModel = null;
+
+        // Actor class
+        try {
+            actorModel = objectMapper.readValue(apiResponse.text(), ActorModel.class);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
+
+        return actorModel;
     }
 }
