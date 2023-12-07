@@ -66,4 +66,18 @@ public class ActorApiTest {
         assertEquals("Statham", actorModel.getLastName());
         assertEquals("UK", actorModel.getBirthCountry());
     }
+
+    @Test
+    public void testGetActorByNameShouldPass() {
+        // Prepare
+        apiRequestContext = browserContext.request();
+        String actorFirstName = "Jason";
+
+        // Perform
+        response = apiRequestContext.get(baseUrl + "/actor/" + actorFirstName);
+
+        // Assert
+        assertEquals(response.status(), 200);
+        assertTrue(ResponseHandler.arrayHasActors(response, actorFirstName));
+    }
 }

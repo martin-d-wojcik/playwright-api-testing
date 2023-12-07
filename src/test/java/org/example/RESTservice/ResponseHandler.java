@@ -28,6 +28,25 @@ public class ResponseHandler {
         return returnValue;
     }
 
+    public static boolean arrayHasActors(APIResponse response, String valueToLookFor) {
+        ObjectMapper objectMapper = new ObjectMapper();
+        boolean returnValue = false;
+
+        try {
+            ArrayNode arrayNode = (ArrayNode) objectMapper.readTree(response.text());
+
+            for (JsonNode jsonNode : arrayNode) {
+                if (jsonNode.get("firstName").textValue().equals(valueToLookFor)) {
+                    returnValue = true;
+                }
+            }
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
+
+        return returnValue;
+    }
+
     public static String getValueFromResponse(APIResponse apiResponse, String key) {
         String returnValue = null;
 
