@@ -19,6 +19,8 @@ public class MovieModel {
         this.releaseYear = releaseYear;
     }
 
+    public MovieModel() {}
+
     public Long getId() {
         return id;
     }

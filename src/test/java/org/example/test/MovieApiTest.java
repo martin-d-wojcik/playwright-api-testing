@@ -2,6 +2,7 @@ package org.example.test;
 
 import com.microsoft.playwright.*;
 import com.microsoft.playwright.options.RequestOptions;
+import org.example.RESTservice.ResponseHandler;
 import org.example.model.MovieModel;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -11,21 +12,26 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class MovieApiTest {
 
-    static Playwright playwright;
-    static Browser browser;
-    BrowserContext context;
+    private static Playwright playwright;
+    private static Browser browser;
+    private static BrowserContext browserContext;
+    private static String baseUrl;
+    private static APIRequestContext apiRequestContext;
+    private static APIResponse response;
+    private static MovieModel movieModel;
 
     @BeforeAll
     static void setup() {
         playwright = Playwright.create();
         browser = playwright.chromium().launch();
+        baseUrl = "http:/localhost:8080/api/v1";
     }
 
     @BeforeEach
     public void initialiseContext() {
         //Below lines of code will enable tracing
-        context = browser.newContext();
-        context.tracing().start(new Tracing.StartOptions()
+        browserContext = browser.newContext();
+        browserContext.tracing().start(new Tracing.StartOptions()
                 .setScreenshots(true)
                 .setSnapshots(true)
                 .setSources(true));
@@ -34,8 +40,8 @@ public class MovieApiTest {
     @Test
     public void testAddNewMovieShouldPass() {
         // prepare
-        APIRequestContext request = context.request();
-        MovieModel movie = new MovieModel(1L,
+        apiRequestContext = browserContext.request();
+        movieModel = new MovieModel(1L,
                 "Lock, Stock and Two Smoking Barells",
                 "Guy Rithcie",
                 "Guy Rithcie",
@@ -44,11 +50,33 @@ public class MovieApiTest {
                 1998);
 
         // Perform
-        APIResponse apiResponse = request.post("http://localhost:8081/api/v1/movie/add",
+        response = apiRequestContext.post("http://localhost:8081/api/v1/movie/add",
                 RequestOptions.create()
-                        .setData(movie));
+                        .setData(movieModel));
 
         // Assert
-        assertEquals(apiResponse.status(), 201);
+        assertEquals(response.status(), 201);
+    }
+
+    @Test
+    public void testGetMoviebByIdShouldPass() {
+        // Prepare
+        apiRequestContext = browserContext.request();
+        long movieId = 6L;
+
+        // Perform
+        response = apiRequestContext.get(baseUrl + "/movie/id/" + movieId);
+
+        // Assert
+        assertEquals(response.status(), 200);
+
+        // Deserialise response to actor object
+        movieModel = ResponseHandler.deserialiseResponseToMovieModelObject(response);
+        assertEquals("The man from U.N.C.L.E", movieModel.getTitle());
+        assertEquals("Guy Ritchie", movieModel.getWriter());
+        assertEquals("Guy Ritchie", movieModel.getDirector());
+        assertEquals("Action, Adventure, Comedy", movieModel.getGenre());
+        assertEquals("SDFCS", movieModel.getAwards());
+        assertEquals(2015, movieModel.getReleaseYear());
     }
 }

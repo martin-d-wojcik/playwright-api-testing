@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.microsoft.playwright.APIResponse;
 import org.example.model.ActorModel;
+import org.example.model.MovieModel;
 
 import java.io.IOException;
 
@@ -73,5 +74,19 @@ public class ResponseHandler {
         }
 
         return actorModel;
+    }
+
+    public static MovieModel deserialiseResponseToMovieModelObject(APIResponse apiResponse) {
+        ObjectMapper objectMapper = new ObjectMapper();
+        MovieModel movieModel = null;
+
+        // Actor class
+        try {
+            movieModel = objectMapper.readValue(apiResponse.text(), MovieModel.class);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
+
+        return movieModel;
     }
 }
