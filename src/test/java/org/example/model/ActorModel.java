@@ -18,6 +18,13 @@ public class ActorModel {
         this.movieId = movieId;
     }
 
+    public ActorModel(String firstName, String lastName, String birthCountry, long movieId) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.birthCountry = birthCountry;
+        this.movieId = movieId;
+    }
+
     // Getters and setters
 
     public long getId() {

@@ -101,4 +101,23 @@ public class ActorApiTest {
         // Assert
         assertEquals(response.status(), 201);
     }
+
+    @Test
+    public void testUpdateActorShouldPass() {
+        // Prepare
+        long actorId = 100L;
+        apiRequestContext = browserContext.request();
+        ActorModel updateActor = new ActorModel("Sly",
+                "Stollane",
+                "USA",
+                1L);
+
+        // Perform
+        APIResponse responseUpdated = apiRequestContext.put(baseUrl + "/actor/" + actorId,
+                RequestOptions.create()
+                        .setData(updateActor));
+
+        // Assert
+        assertEquals(responseUpdated.status(), 200);
+    }
 }
