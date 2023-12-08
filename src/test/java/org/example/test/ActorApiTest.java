@@ -1,12 +1,10 @@
 package org.example.test;
 
 import com.microsoft.playwright.*;
-import com.microsoft.playwright.options.RequestOptions;
 import org.example.RESTservice.RequestHandler;
 import org.example.RESTservice.ResponseHandler;
 import org.example.model.ActorModel;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -14,20 +12,13 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 public class ActorApiTest {
-    // static Playwright playwright;
-    // static Browser browser;
-    // static BrowserContext browserContext;
     private static String baseUrl;
-    private static APIRequestContext apiRequestContext;
     private static APIResponse response;
     private static ActorModel actorModel;
     private static RequestHandler requestHandler;
 
     @BeforeAll
     static void setup() {
-        // playwright = Playwright.create();
-        // browser = playwright.chromium().launch();
-
         requestHandler = new RequestHandler();
         baseUrl = "http:/localhost:8080/api/v1";
     }
@@ -48,14 +39,14 @@ public class ActorApiTest {
     @Test
     public void testAddNewActorShouldPass() {
         // Prepare
-        actorModel = new ActorModel(102L,
-                "Lester",
-                "Allone",
+        actorModel = new ActorModel(103L,
+                "Roy",
+                "Lling",
                 "USA",
                 1L);
 
         // Perform
-        response = requestHandler.postRequestActor(baseUrl + "/actor", actorModel);
+        response = requestHandler.postRequest(baseUrl + "/actor", actorModel);
 
         // Assert
         assertEquals(201, response.status());

@@ -24,12 +24,12 @@ public class RequestHandler {
         apiRequestContext = browserContext.request();
     }
 
-    public APIResponse postRequestActor(String url, ActorModel actorModel) {
+    public APIResponse postRequest(String url, Object object) {
         initialiseContext();
 
         return apiRequestContext.post(url,
                 RequestOptions.create()
-                        .setData(actorModel));
+                        .setData(object));
     }
 
     public APIResponse putRequestActor(String url, ActorModel actorModel) {
