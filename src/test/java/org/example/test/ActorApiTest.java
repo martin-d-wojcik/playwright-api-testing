@@ -92,7 +92,7 @@ public class ActorApiTest {
                 1L);
 
         // Perform
-        response = requestHandler.putRequestActor(baseUrl + "/actor/" + actorId, updateActor);
+        response = requestHandler.putRequest(baseUrl + "/actor/" + actorId, updateActor);
 
         // Assert
         assertEquals(200, response.status());

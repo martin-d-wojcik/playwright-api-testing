@@ -2,7 +2,6 @@ package org.example.RESTservice;
 
 import com.microsoft.playwright.*;
 import com.microsoft.playwright.options.RequestOptions;
-import org.example.model.ActorModel;
 
 public class RequestHandler {
     static Playwright playwright;
@@ -32,12 +31,12 @@ public class RequestHandler {
                         .setData(object));
     }
 
-    public APIResponse putRequestActor(String url, ActorModel actorModel) {
+    public APIResponse putRequest(String url, Object object) {
         initialiseContext();
 
         return apiRequestContext.put(url,
                 RequestOptions.create()
-                        .setData(actorModel));
+                        .setData(object));
     }
 
     public APIResponse deleteRequest(String url) {
